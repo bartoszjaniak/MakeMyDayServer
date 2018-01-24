@@ -26,5 +26,23 @@ namespace MakeMyDayServer.Model
             else
                 return false;
         }
+
+        public void RenowExpirationTime()
+        {
+            DeadTime = DateTime.Now.AddMinutes(20);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ((Token)obj).Value == Value && ((Token)obj).DeadTime == DeadTime;
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + Value.GetHashCode();
+            hash = (hash * 7) + DeadTime.GetHashCode();
+            return hash;            
+        }
     }
 }

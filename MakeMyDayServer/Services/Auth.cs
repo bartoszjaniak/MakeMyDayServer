@@ -19,7 +19,15 @@ namespace MakeMyDayServer.Services
             return generatedToken;
         }
         
-
+        public static bool CheckTokenValidAndReneweExpirationTime(Token token)
+        {
+            if(TokenList.Contains(token) && token.CheckExpirationTime())
+            {
+                token.RenowExpirationTime();
+                return true;
+            }
+            return false;
+        }
 
     }
 }

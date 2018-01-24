@@ -17,22 +17,23 @@ namespace MakeMyDayServer.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
+        // GET api/values/5  -- logowanie
         [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]Account account)
+        public string Get(Account account)
         {
             var userValid = account.TryLogin();
-            if (userValid)
-            {
 
-            }
+            if (userValid)
+                return "Zalogowano";
+            else
+                return "Błędne dane logowania";
+        }
+
+        // POST api/values   -- zakładanie konta
+        [HttpPost]
+        public void Post(Account account)
+        {
+            
         }
 
         // PUT api/values/5
