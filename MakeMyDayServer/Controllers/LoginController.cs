@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MakeMyDayServer.Model;
+using MakeMyDayServer.Services;
 
 namespace MakeMyDayServer.Controllers
 {
@@ -12,34 +13,37 @@ namespace MakeMyDayServer.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public int Get()
         {
-            return new string[] { "value1", "value2" };
+
+            return SesionAuth.AcctualUserCount();
         }
 
-        // GET api/values/5  -- logowanie
-        [HttpGet("{id}")]
-        public string Get(Account account)
-        {
-            var userValid = account.TryLogin();
 
-            if (userValid)
-                return "Zalogowano";
-            else
-                return "Błędne dane logowania";
+        [HttpGet("{id}")]
+        public string Get(Guid id, [FromBody] string value)
+        {
+            return id.ToString() ;
         }
 
         // POST api/values   -- zakładanie konta
         [HttpPost]
-        public void Post(Account account)
+        public string Post([FromBody]string value)
         {
-            
+            return value;
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public string Put(int id, [FromBody]Account value)
         {
+        
+            bool userValid = value.LoginValid();
+
+            if (userValid)
+                return "Zalogowano Token: " + SesionAuth.GetNewToken();
+            else
+                return "Błędne dane logowania";
         }
 
         // DELETE api/values/5

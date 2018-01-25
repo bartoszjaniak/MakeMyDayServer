@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MakeMyDayServer.Settings;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,12 +13,22 @@ namespace MakeMyDayServer.Model
 
         public Token()
         {
-            if(Value == null)
-            {
-                Value = Guid.NewGuid();
-                DeadTime = DateTime.Now.AddMinutes(20);
-            }           
+            Value = System.Guid.NewGuid();
+            DeadTime = DateTime.Now.AddSeconds(SessionProperties.SessionTimeInSecound);
+         } 
+
+        public Token(Guid token)
+        {
+            Value = token;
+            DeadTime = DateTime.Now.AddSeconds(SessionProperties.SessionTimeInSecound);
         }
+
+        public Token(string token)
+        {
+            Value = Guid.Parse(token);
+            DeadTime = DateTime.Now.AddSeconds(SessionProperties.SessionTimeInSecound);
+        }
+
 
         public bool CheckExpirationTime()
         {
@@ -29,12 +40,12 @@ namespace MakeMyDayServer.Model
 
         public void RenowExpirationTime()
         {
-            DeadTime = DateTime.Now.AddMinutes(20);
+            DeadTime = DateTime.Now.AddSeconds(SessionProperties.SessionTimeInSecound);
         }
 
         public override bool Equals(object obj)
         {
-            return ((Token)obj).Value == Value && ((Token)obj).DeadTime == DeadTime;
+            return ((Token)obj).Value == Value;
         }
 
         public override int GetHashCode()
@@ -44,5 +55,10 @@ namespace MakeMyDayServer.Model
             hash = (hash * 7) + DeadTime.GetHashCode();
             return hash;            
         }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }               
     }
 }

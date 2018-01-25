@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MakeMyDayServer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,12 +34,10 @@ namespace MakeMyDayServer.Model
             return Guid.NewGuid().ToString();
         }
 
-        public bool TryLogin()
+        public bool LoginValid()
         {
             //TODO: check in database if user is exists and check password
             return true;
-        }
-
-
+        }     
     }
 }
